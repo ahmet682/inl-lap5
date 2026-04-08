@@ -5,9 +5,9 @@
 <title>İnkılap Quiz ULTRA</title>
 <style>
 body { font-family: Arial; background:#111; color:white; text-align:center; }
-button { padding:10px; margin:5px; cursor:pointer; border:none; border-radius:5px; }
+button { padding:10 px; margin:5 px; cursor:pointer; border:none; border-radius:5 px; }
 #menu button { background:#3498db; color:white; }
-#secenekler button { background:#2ecc71; color:white; display:block; width:220px; margin:10px auto; }
+#secenekler button { background:#2ecc71; color:white; display:block; width:220 px; margin:10 px auto; }
 #cikis { background:red; }
 </style>
 </head>
@@ -42,12 +42,12 @@ button { padding:10px; margin:5px; cursor:pointer; border:none; border-radius:5p
 
 <script>
 
-let puan = 0;
-let sure = 30;
-let can = 3;
-let timer;
+le t puan = 0;
+le t sure = 30;
+le t can = 3;
+le t timer;
 
-let sorular = {
+le t sorular = {
 1: [
 {s:"Mustafa Kemal'in doğduğu şehir hangisidir?", a:["Selanik","İstanbul","Samsun","Ankara"], d:0},
 {s:"Mustafa Kemal'e Kemal adını kim vermiştir?", a:["Babası","Öğretmeni","Annesi","Arkadaşı"], d:1},
@@ -99,10 +99,10 @@ let sorular = {
 ]
 };
 
-let aktif = [];
-let index = 0;
+le t aktif = [];
+le t index = 0;
 
-function basla(u){
+functionbasla(u){
 document.getElementById("menu").style.display="none";
 document.getElementById("oyun").style.display="block";
 aktif = sorular[u];
@@ -112,16 +112,16 @@ can = 3;
 goster();
 }
 
-function goster(){
+functio goster(){
 clearInterval(timer);
 sure = 30;
 document.getElementById("sure").innerText = sure;
 document.getElementById("can").innerText = can;
 
-let q = aktif[index];
+le q = aktif[index];
 document.getElementById("soru").innerText = q.s;
 
-let sec = "";
+lt sec = "";
 q.a.forEach((x,i)=>{
 sec += <button onclick="cevap(${i})">${x}</button>;
 });
@@ -131,7 +131,7 @@ timer = setInterval(()=>{
 sure--;
 document.getElementById("sure").innerText = sure;
 
-if(sure == 0){
+i f(sure == 0){
 clearInterval(timer);
 can--;
 kontrol();
@@ -139,13 +139,13 @@ kontrol();
 },1000);
 }
 
-function cevap(i){
+funct ion cevap(i){
 clearInterval(timer);
 
-if(i == aktif[index].d){
+i f(i == aktif[index].d){
 puan += 10;
 document.getElementById("sonuc").innerText = "✅ Doğru!";
-}else{
+}el se{
 can--;
 document.getElementById("sonuc").innerText = "❌ Yanlış!";
 }
@@ -153,39 +153,39 @@ document.getElementById("sonuc").innerText = "❌ Yanlış!";
 kontrol();
 }
 
-function kontrol(){
+func tion kontrol(){
 document.getElementById("puan").innerText = puan;
 document.getElementById("can").innerText = can;
 
-if(can <= 0){
+i f(can <= 0){
 alert("💀 Canın bitti! Puan: " + puan);
 location.reload();
-return;
+ret urn;
 }
 
 index++;
 
-if(index < aktif.length){
+i f(index < aktif.length){
 setTimeout(()=>{
 document.getElementById("sonuc").innerText="";
 goster();
 },1000);
-}else{
+}e lse{
 bitir();
 }
 }
 
-function bitir(){
-if(puan >= 50){
+functio n bitir(){
+i f(puan >= 50){
 alert("🏆 Kazandın! Puan: " + puan);
-}else{
+}e lse{
 alert("😢 Kaybettin! Puan: " + puan);
 }
 location.reload();
 }
 
-function cikis(){
-if(confirm("Çıkmak istiyor musun?")){
+funct ion cikis(){
+i f(confirm("Çıkmak istiyor musun?")){
 location.reload();
 }
 }
