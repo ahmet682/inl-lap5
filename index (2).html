@@ -1,0 +1,199 @@
+[19:08, 08.04.2026] Ahmet: <!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>İnkılap Quiz ULTRA</title>
+<style>
+body { font-family: Arial; background:#111; color:white; text-align:center; }
+button { padding:10px; margin:5px; cursor:pointer; border:none; border-radius:5px; }
+#menu button { background:#3498db; color:white; }
+#secenekler button { background:#2ecc71; color:white; display:block; width:220px; margin:10px auto; }
+#cikis { background:red; }
+</style>
+</head>
+
+<body>
+
+<h1>🎮 İnkılap Tarihi ULTRA Quiz</h1>
+
+<div id="menu">
+<h2>Ünite Seç</h2>
+<button onclick="basla(1)">1. Ünite</button>
+<button onclick="basla(2)">2. Ünite</button>
+<button onclick="basla(3)">3. Ünite</button>
+<button onclick="basla(4)">4. Ünite</button>
+<button onclick="basla(5)">5. Ünite</button>
+<button onclick="basla(6)">6. Ünite</button>
+<button onclick="basla(7)">7. Ünite</button>
+</div>
+
+<div id="oyun" style="display:none;">
+<h2 id="soru"></h2>
+<div id="secenekler"></div>
+
+<p>⏱️ Süre: <span id="sure">30</span></p>
+<p>🏆 Puan: <span id="puan">0</span></p>
+<p>❤️ Can: <span id="can">3</span></p>
+
+<button id="cikis" onclick="cikis()">Çık</button>
+
+<p id="sonuc"></p>
+</div>
+
+<script>
+
+let puan = 0;
+let sure = 30;
+let can = 3;
+let timer;
+
+let sorular = {
+1: [
+{s:"Mustafa Kemal'in doğduğu şehir hangisidir?", a:["Selanik","İstanbul","Samsun","Ankara"], d:0},
+{s:"Mustafa Kemal'e Kemal adını kim vermiştir?", a:["Babası","Öğretmeni","Annesi","Arkadaşı"], d:1},
+{s:"Mustafa Kemal hangi okuldan mezun oldu?", a:["Harp Akademisi","Tıp Fakültesi","Hukuk","Mühendislik"], d:0},
+{s:"Mustafa Kemal’in doğduğu dönemde Osmanlı’nın durumu nasıldı?", a:["Güçlü","Zayıflayan","Yeni kurulan","Yok"], d:1},
+{s:"Mustafa Kemal’in fikir hayatını etkileyen kişi kimdir?", a:["Namık Kemal","Fatih Sultan Mehmet","Yavuz Sultan Selim","Kanuni"], d:0}
+],
+
+2: [
+{s:"1. Dünya Savaşı'nın en önemli nedeni nedir?", a:["Sömürge yarışı","Barış isteği","Eğitim","Sanayi"], d:0},
+{s:"Mondros Ateşkes Antlaşması ne zaman imzalandı?", a:["1918","1923","1919","1938"], d:0},
+{s:"Kuvayi Milliye neyi ifade eder?", a:["Halk direnişi","Resmi ordu","Okul","Antlaşma"], d:0},
+{s:"Sevr Antlaşması'nın amacı nedir?", a:["Osmanlı'yı parçalamak","Barış sağlamak","Eğitim","Sanayi"], d:0},
+{s:"Amasya Genelgesi neyi başlattı?", a:["Milli Mücadele","Savaş","Barış","Eğitim"], d:0}
+],
+
+3: [
+{s:"Sakarya Meydan Savaşı nerede yapılmıştır?", a:["Ankara","İzmir","Bursa","Adana"], d:0},
+{s:"Büyük Taarruz hangi yıl yapılmıştır?", a:["1922","1919","1923","1930"], d:0},
+{s:"Lozan Antlaşması neyi sağlar?", a:["Bağımsızlık","Savaş","Vergi","Eğitim"], d:0},
+{s:"Mudanya Ateşkes Antlaşması neyi ifade eder?", a:["Ateşkes","Savaş","Plan","Vergi"], d:0},
+{s:"Tekalif-i Milliye Emirleri ne içindir?", a:["Orduyu güçlendirme","Eğitim","Vergi","Sanayi"], d:0}
+],
+
+4: [
+{s:"Cumhuriyetçilik neyi savunur?", a:["Halk yönetimi","Krallık","İmparatorluk","Savaş"], d:0},
+{s:"Laiklik ne demektir?", a:["Din ve devlet işleri ayrıdır","Din devleti","Krallık","Vergi"], d:0},
+{s:"Halkçılık nedir?", a:["Eşitlik","Krallık","Savaş","Vergi"], d:0},
+{s:"Devletçilik neyi ifade eder?", a:["Ekonomide devlet","Özel sektör","Tarım","Sanayi"], d:0},
+{s:"İnkılapçılık nedir?", a:["Yenilik","Savaş","Vergi","Eğitim"], d:0}
+],
+
+5: [
+{s:"Terakkiperver Cumhuriyet Fırkası nedir?", a:["Parti","Savaş","Okul","Antlaşma"], d:0},
+{s:"Şeyh Sait İsyanı neye karşıdır?", a:["Cumhuriyet","Eğitim","Sanayi","Barış"], d:0},
+{s:"Serbest Cumhuriyet Fırkası neden kapandı?", a:["Karışıklık","Başarı","Eğitim","Sanayi"], d:0}
+],
+
+6: [
+{s:"Hatay ne zaman Türkiye'ye katıldı?", a:["1939","1923","1919","1945"], d:0},
+{s:"Atatürk dış politikada neyi savunmuştur?", a:["Barış","Savaş","Vergi","Sanayi"], d:0},
+{s:"Yurtta sulh cihanda sulh ne demektir?", a:["Barış","Savaş","Vergi","Plan"], d:0}
+],
+
+7: [
+{s:"Atatürk kaç yılında vefat etti?", a:["1938","1923","1919","1940"], d:0},
+{s:"2. Dünya Savaşı ne zaman başladı?", a:["1939","1919","1923","1945"], d:0},
+{s:"Türkiye 2. Dünya Savaşı'na girdi mi?", a:["Hayır","Evet","Bilinmiyor","Kısmen"], d:0}
+]
+};
+
+let aktif = [];
+let index = 0;
+
+function basla(u){
+document.getElementById("menu").style.display="none";
+document.getElementById("oyun").style.display="block";
+aktif = sorular[u];
+index = 0;
+puan = 0;
+can = 3;
+goster();
+}
+
+function goster(){
+clearInterval(timer);
+sure = 30;
+document.getElementById("sure").innerText = sure;
+document.getElementById("can").innerText = can;
+
+let q = aktif[index];
+document.getElementById("soru").innerText = q.s;
+
+let sec = "";
+q.a.forEach((x,i)=>{
+sec += <button onclick="cevap(${i})">${x}</button>;
+});
+document.getElementById("secenekler").innerHTML = sec;
+
+timer = setInterval(()=>{
+sure--;
+document.getElementById("sure").innerText = sure;
+
+if(sure == 0){
+clearInterval(timer);
+can--;
+kontrol();
+}
+},1000);
+}
+
+function cevap(i){
+clearInterval(timer);
+
+if(i == aktif[index].d){
+puan += 10;
+document.getElementById("sonuc").innerText = "✅ Doğru!";
+}else{
+can--;
+document.getElementById("sonuc").innerText = "❌ Yanlış!";
+}
+
+kontrol();
+}
+
+function kontrol(){
+document.getElementById("puan").innerText = puan;
+document.getElementById("can").innerText = can;
+
+if(can <= 0){
+alert("💀 Canın bitti! Puan: " + puan);
+location.reload();
+return;
+}
+
+index++;
+
+if(index < aktif.length){
+setTimeout(()=>{
+document.getElementById("sonuc").innerText="";
+goster();
+},1000);
+}else{
+bitir();
+}
+}
+
+function bitir(){
+if(puan >= 50){
+alert("🏆 Kazandın! Puan: " + puan);
+}else{
+alert("😢 Kaybettin! Puan: " + puan);
+}
+location.reload();
+}
+
+function cikis(){
+if(confirm("Çıkmak istiyor musun?")){
+location.reload();
+}
+}
+
+</script>
+
+</body>
+</html>
+[19:23, 08.04.2026] Ahmet: https://github.com/ahmet682/ink-lap-4/blob/main/README.md?plain=1
+[19:26, 08.04.2026] Ahmet: https://ahmet682.github.io/ink-lap-4/
+[19:29, 08.04.2026] Ahmet: 
